@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GestionExcepciones {
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> manejoError(Exception e) {
         // Se devuelve una respuesta con el código de error BAD_REQUEST
         // indicando en el cuerpo el mensaje del error
+        System.out.println("Paso por el Gestionador de Excepciones");
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
