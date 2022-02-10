@@ -16,7 +16,7 @@ public class AgendsServiceImpl implements AgendaService {
 
 	@Override
 	public void agregarContacto(Contacto contacto) throws Exception {
-		if (agendaDAO.recuperarContacto(contacto.getIdContacto()) == null) {
+		if (agendaDAO.recuperarContacto(contacto.getEmail()) == null) {
 			agendaDAO.agregarContacto(contacto);
 			return;
 		}
