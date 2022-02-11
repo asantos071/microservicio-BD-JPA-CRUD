@@ -20,7 +20,6 @@ public class AgendsServiceImpl implements AgendaService {
 			agendaDAO.agregarContacto(contacto);
 			return;
 		}
-		System.out.println("Lanzó la excepcion de contrato repetido");
 		throw new Exception("Contacto repetido");
 	}
 
