@@ -1,6 +1,7 @@
 package com.app;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,26 +46,33 @@ public class JWTauthorizationFilter extends BasicAuthenticationFilter {
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(Constants.getHeader());
+        System.out.println("Token recogido " + token);
         if (token != null) {
             // Se procesa el token y se recupera el usuario y los roles
             Claims claims = Jwts.parser()
                     .setSigningKey(Constants.getKey())
                     .parseClaimsJws(token.replace(Constants.getPrefixtoken(), ""))
                     .getBody();
-
             String user = claims.getSubject(); // usuario
+            System.out.println("Usuario " + user);
             List<String> authorities = (List<String>) claims.get("authorities"); // roles
+            System.out.println("Roles " + Arrays.toString(authorities.toArray()));
             if (user != null) {
+                UsernamePasswordAuthenticationToken tokenCompare = extracted(user, authorities);
                 // creamos el objeto con la información del usuario
-                return (new UsernamePasswordAuthenticationToken(user,
-                        authorities
-                                .stream()
-                                .map(SimpleGrantedAuthority::new)
-                                .collect(Collectors.toList())));
+                return tokenCompare;
             }
 
         }
         return null;
+    }
+
+    private UsernamePasswordAuthenticationToken extracted(String user, List<String> authorities) {
+        return new UsernamePasswordAuthenticationToken(user, null,
+                authorities
+                        .stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList()));
     }
 
 }

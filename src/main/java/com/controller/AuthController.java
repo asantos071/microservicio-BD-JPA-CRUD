@@ -27,7 +27,7 @@ public class AuthController {
     public String login(@RequestParam("user") String user, @RequestParam("pwd") String pwd) {
         Authentication autentication = authManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user, pwd));
-        // Si el uusario esta autenticado, se genera el token
+        // Si el usuario esta autenticado, se genera el token
         if (autentication.isAuthenticated()) {
             return getToken(autentication);
         } else {
